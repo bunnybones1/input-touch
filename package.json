@@ -1,0 +1,40 @@
+{
+  "name": "input-touch",
+  "version": "1.0.0",
+  "description": "A multitouch controller with helpers for fancy two-finger transformations like classic pinch zoom/rotate/pan.",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Tomasz Dysinski",
+    "email": "oz@bunnybones.com",
+    "url": "https://github.com/bunnybones1"
+  },
+  "dependencies": {
+    "browser-event-adder": "^1.0.1",
+    "signals": "^1.0.0"
+  },
+  "devDependencies": {
+    "dom-quick-text": "^1.0.0",
+    "loadandrunscripts": "^1.0.0",
+    "threejs-hittest": "^1.0.0",
+    "threejs-managed-view": "^1.0.4"
+  },
+  "scripts": {
+    "test": "beefy test.js --live --open"
+  },
+  "keywords": [
+    "multitouch",
+    "touch",
+    "pinch",
+    "zoom",
+    "rotate"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bunnybones1/input-touch.git"
+  },
+  "homepage": "https://github.com/bunnybones1/input-touch",
+  "bugs": {
+    "url": "https://github.com/bunnybones1/input-touch/issues"
+  }
+}
