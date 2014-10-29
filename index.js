@@ -92,14 +92,17 @@ Touch.prototype = {
 	},
 
 	_touchstart: function(e) {
+		e.preventDefault();
 		this._processTouchEventList(e.changedTouches, START);
 	},
 
 	_touchmove: function(e) {
+		e.preventDefault();
 		this._processTouchEventList(e.changedTouches, MOVE);
 	},
 
 	_touchend: function(e) {
+		e.preventDefault();
 		this._processTouchEventList(e.changedTouches, END);
 	}
 }
