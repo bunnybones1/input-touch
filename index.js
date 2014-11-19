@@ -81,6 +81,7 @@ Touch.prototype = {
 				break;
 			case MOVE:
 				var touch = this.touches[touchEvent.identifier];
+				if(!touch) return;
 				touch.x = touchEvent.offsetX;
 				touch.y = touchEvent.offsetY;
 				this.onTouchMoveSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
