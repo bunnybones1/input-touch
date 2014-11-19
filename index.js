@@ -21,11 +21,14 @@ function makeFakeTouchEvent(x, y, identifier) {
 			clientX: x,
 			clientY: y,
 			identifier: identifier
-		}]
+		}],
+		preventDefault: function() {}
 	};
 }
 
-function Touch() {
+function Touch(targetElement) {
+	this.targetElement = targetElement;
+	this.isDocument = this.targetElement === document;
 	this.touches = new Array(100);
 	this.testStart = this.testStart.bind(this);
 	this.testMove = this.testMove.bind(this);
@@ -33,9 +36,9 @@ function Touch() {
 	this._touchstart = this._touchstart.bind(this);
 	this._touchmove = this._touchmove.bind(this);
 	this._touchend = this._touchend.bind(this);
-	eventsUtil.addEvent(document, "touchstart", this._touchstart);
-	eventsUtil.addEvent(document, "touchmove", this._touchmove);
-	eventsUtil.addEvent(document, "touchend", this._touchend);
+	eventsUtil.addEvent(targetElement, "touchstart", this._touchstart);
+	eventsUtil.addEvent(targetElement, "touchmove", this._touchmove);
+	eventsUtil.addEvent(targetElement, "touchend", this._touchend);
 	this.onTouchStartSignal = new signals.Signal();
 	this.onTouchEndSignal = new signals.Signal();
 	this.onTouchMoveSignal = new signals.Signal();
@@ -56,22 +59,30 @@ Touch.prototype = {
 	},
 
 	_processTouchEvent: function(touchEvent, state) {
+		if(this.isDocument) {
+			touchEvent.offsetX = touchEvent.clientX;
+			touchEvent.offsetY = touchEvent.clientY;
+		} else {
+			touchEvent.offsetX = touchEvent.clientX - this.targetElement.offsetLeft;
+			touchEvent.offsetY = touchEvent.clientY - this.targetElement.offsetTop;
+		}
 		var touch = this.touches[touchEvent.identifier];
+		console.log(this.targetElement);
 		switch(state) {
 			case START:
 				touch = {
-					downX: touchEvent.clientX,
-					downY: touchEvent.clientY,
-					x: touchEvent.clientX,
-					y: touchEvent.clientY
+					downX: touchEvent.offsetX,
+					downY: touchEvent.offsetY,
+					x: touchEvent.offsetX,
+					y: touchEvent.offsetY
 				};
 				this.touches[touchEvent.identifier] = touch;
 				this.onTouchStartSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
 				break;
 			case MOVE:
 				var touch = this.touches[touchEvent.identifier];
-				touch.x = touchEvent.clientX;
-				touch.y = touchEvent.clientY;
+				touch.x = touchEvent.offsetX;
+				touch.y = touchEvent.offsetY;
 				this.onTouchMoveSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
 				break;
 			case END:
@@ -107,4 +118,4 @@ Touch.prototype = {
 	}
 }
 
-module.exports = new Touch();
+module.exports = Touch;
