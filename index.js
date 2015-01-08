@@ -66,8 +66,8 @@ Touch.prototype = {
 			touchEvent.offsetX = touchEvent.clientX - this.targetElement.offsetLeft;
 			touchEvent.offsetY = touchEvent.clientY - this.targetElement.offsetTop;
 		}
-		var touch = this.touches[touchEvent.identifier];
-		console.log(this.targetElement);
+		var identifier = touchEvent.identifier|0;
+		var touch = this.touches[identifier];
 		switch(state) {
 			case START:
 				touch = {
@@ -76,22 +76,22 @@ Touch.prototype = {
 					x: touchEvent.offsetX,
 					y: touchEvent.offsetY
 				};
-				this.touches[touchEvent.identifier] = touch;
-				this.onTouchStartSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
+				this.touches[identifier] = touch;
+				this.onTouchStartSignal.dispatch(touch.x, touch.y, identifier);
 				break;
 			case MOVE:
-				var touch = this.touches[touchEvent.identifier];
+				var touch = this.touches[identifier];
 				if(!touch) return;
 				touch.x = touchEvent.offsetX;
 				touch.y = touchEvent.offsetY;
-				this.onTouchMoveSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
+				this.onTouchMoveSignal.dispatch(touch.x, touch.y, identifier);
 				break;
 			case END:
-				var touch = this.touches[touchEvent.identifier];
-				this.touches[touchEvent.identifier] = null;
-				this.onTouchEndSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
+				var touch = this.touches[identifier];
+				this.touches[identifier] = null;
+				this.onTouchEndSignal.dispatch(touch.x, touch.y, identifier);
 				if(!testMovedSinceDown(touch)) {
-					this.onTouchTapSignal.dispatch(touch.x, touch.y, touchEvent.identifier);
+					this.onTouchTapSignal.dispatch(touch.x, touch.y, identifier);
 				}
 				break;
 		}
