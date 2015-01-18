@@ -5,7 +5,7 @@ var QuickText = require('dom-quick-text');
 
 
 var containerDiv = document.createElement('div');
-containerDiv.id = 'threejsContainer';
+containerDiv.id = 'container';
 document.getElementsByTagName('body')[0].appendChild(containerDiv);
 console.log(containerDiv);
 containerDiv.style.position = 'absolute';
@@ -14,6 +14,16 @@ containerDiv.style['background-color'] = '#00ff00';
 containerDiv.style.top = '25%';
 containerDiv.style.width = '50%';
 containerDiv.style.height = '50%';
+
+var containerChildDiv = document.createElement('div');
+containerChildDiv.id = 'subContainer';
+containerDiv.appendChild(containerChildDiv);
+containerChildDiv.style.position = 'absolute';
+containerChildDiv.style.left = '25%';
+containerChildDiv.style['background-color'] = '#ffff00';
+containerChildDiv.style.top = '25%';
+containerChildDiv.style.width = '50%';
+containerChildDiv.style.height = '50%';
 
 function prepareTouchDemo(element) {
 	var touch = new Touch(element);
