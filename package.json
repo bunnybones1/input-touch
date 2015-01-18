@@ -1,6 +1,6 @@
 {
   "name": "input-touch",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A multitouch controller with helpers for fancy two-finger transformations like classic pinch zoom/rotate/pan.",
   "main": "index.js",
   "license": "MIT",
