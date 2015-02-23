@@ -84,10 +84,10 @@ Touch.prototype = {
 			touchEvent.offsetX = touchEvent.clientX - this.targetElement.offsetLeft;
 			touchEvent.offsetY = touchEvent.clientY - this.targetElement.offsetTop;
 		}
-		console.log('touchEvent.identifier', touchEvent.identifier);
+		// console.log('touchEvent.identifier', touchEvent.identifier);
 		var identifier = touchEvent.identifier || 0;
 		identifier = this.poolIdentifier(identifier);
-		console.log('identifier', identifier);
+		// console.log('identifier', identifier);
 
 		var touch = this.touches[identifier];
 		switch(state) {
