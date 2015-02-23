@@ -2,7 +2,7 @@
 
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A multitouch controller with helpers for fancy two-finger transformations like classic pinch zoom/rotate/pan.
+A multitouch controller with signals.
 
 ## Usage
 
