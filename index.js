@@ -30,6 +30,10 @@ function Touch(targetElement) {
 	this.targetElement = targetElement;
 	this.isDocument = this.targetElement === document;
 	this.touches = new Array(100);
+	this.touchPool = new Array(100);
+	for (var i = 0; i < this.touchPool.length; i++) {
+		this.touchPool[i] = -1;
+	};
 	this.testStart = this.testStart.bind(this);
 	this.testMove = this.testMove.bind(this);
 	this.testEnd = this.testEnd.bind(this);
@@ -58,6 +62,20 @@ Touch.prototype = {
 		this._touchend(makeFakeTouchEvent(x, y, identifier));
 	},
 
+	poolIdentifier: function(id) {
+		return this.touchPool.indexOf(id);
+	},
+
+	addTouchToPool: function(id) {
+		var index = this.touchPool.indexOf(-1);
+		this.touchPool[index] = id;
+	},
+
+	releaseTouchFromPool: function(id) {
+		var index = this.touchPool.indexOf(id);
+		this.touchPool[index] = -1;
+	},
+
 	_processTouchEvent: function(touchEvent, state) {
 		if(this.isDocument) {
 			touchEvent.offsetX = touchEvent.clientX;
@@ -66,7 +84,11 @@ Touch.prototype = {
 			touchEvent.offsetX = touchEvent.clientX - this.targetElement.offsetLeft;
 			touchEvent.offsetY = touchEvent.clientY - this.targetElement.offsetTop;
 		}
-		var identifier = touchEvent.identifier|0;
+		console.log('touchEvent.identifier', touchEvent.identifier);
+		var identifier = touchEvent.identifier || 0;
+		identifier = this.poolIdentifier(identifier);
+		console.log('identifier', identifier);
+
 		var touch = this.touches[identifier];
 		switch(state) {
 			case START:
@@ -105,6 +127,9 @@ Touch.prototype = {
 
 	_touchstart: function(e) {
 		e.preventDefault();
+		for (var i = e.changedTouches.length - 1; i >= 0; i--) {
+			this.addTouchToPool(e.changedTouches[i].identifier);
+		};
 		this._processTouchEventList(e.changedTouches, START);
 	},
 
@@ -116,6 +141,9 @@ Touch.prototype = {
 	_touchend: function(e) {
 		e.preventDefault();
 		this._processTouchEventList(e.changedTouches, END);
+		for (var i = e.changedTouches.length - 1; i >= 0; i--) {
+			this.releaseTouchFromPool(e.changedTouches[i].identifier);
+		};
 	}
 }
 
