@@ -111,10 +111,10 @@ Touch.prototype = {
 			case END:
 				var touch = this.touches[identifier];
 				this.touches[identifier] = null;
-				this.onTouchEndSignal.dispatch(touch.x, touch.y, identifier);
 				if(!testMovedSinceDown(touch)) {
 					this.onTouchTapSignal.dispatch(touch.x, touch.y, identifier);
 				}
+				this.onTouchEndSignal.dispatch(touch.x, touch.y, identifier);
 				break;
 		}
 	},
